@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:convert';
+import 'dart:async';
 
 void main() {
   runApp(new FriendlychatApp());
@@ -21,7 +22,7 @@ class ChatScreen extends StatefulWidget {
   State createState() => new ChatScreenState();
 }
 
-class ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
   @override
@@ -77,72 +78,78 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
   void _handleSubmitted(String text) {
-    print(11111);
     _textController.clear();
-//    本来のボタン押したらList追加される処理
-//    ChatMessage message = new ChatMessage(
-//      text: text,
-//    );
-//    setState(() {
-//      _messages.insert(0, message);
-//    });
-
     // 独自実装 非同期でデータ取得してリスト表示
-    print(22222);
     loadData();
   }
 
   void loadData() async {
-    var httpClient = new HttpClient();
-    var uri = new Uri.https('api.syosetu.com', '/novelapi/api/', {'out': 'json'});
-    var request = await httpClient.getUrl(uri);
-    var response = await request.close();
-    var responseBody = await response.transform(UTF8.decoder).join();
+    HttpClient httpClient = new HttpClient();
+    Uri uri = new Uri.https('api.syosetu.com', '/novelapi/api/', {'out': 'json'});
+    HttpClientRequest request = await httpClient.getUrl(uri);
+    HttpClientResponse response = await request.close();
+    String responseBody = await response.transform(UTF8.decoder).join();
 
     // json parse
     List parsedList = JSON.decode(responseBody);
     print(parsedList);
-    for (var novel in parsedList) {
+
+    for (Map novel in parsedList) {
       if(novel.containsKey('title')){
         print(novel['title']);
         ChatMessage message = new ChatMessage(
-          lavel: novel['title'],
-          text: novel['writer']
+          novel: novel,
+          animationController: new AnimationController(
+            duration: new Duration(milliseconds: 100),
+            vsync: this,
+          ),
         );
         setState(() {
           _messages.insert(0, message);
         });
+        message.animationController.forward();
       }
     }
   }
+  @override
+  void dispose() {
+    for (ChatMessage message in _messages)
+      message.animationController.dispose();
+    super.dispose();
+  }
 }
 class ChatMessage extends StatelessWidget {
-  ChatMessage({this.lavel, this.text});
-  final String text;
-  final String lavel;
+  ChatMessage({this.novel, this.animationController});
+  final Map novel;
+  final AnimationController animationController;
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            child: new CircleAvatar(child: new Text(lavel[0])),
-          ),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(lavel, style: Theme.of(context).textTheme.subhead),
-              new Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return new SizeTransition(
+      sizeFactor: new CurvedAnimation(
+        parent: animationController, curve: Curves.easeOut),
+      axisAlignment: 0.0,
+      child: new Container(
+        margin: const EdgeInsets.symmetric(vertical: 10.0),
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            new Container(
+              margin: const EdgeInsets.only(right: 16.0),
+              child: new CircleAvatar(child: new Text(novel['general_all_no'].toString())),
+            ),
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(novel['title'], style: Theme.of(context).textTheme.subhead),
+                new Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: new Text(novel['writer']),
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
     );
   }
 }
