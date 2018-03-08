@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 // of _CardData objects. Each _CardData object is displayed by a _CardItem.
 
 const String _kGalleryAssetsPackage = 'flutter_gallery_assets';
+const int headerHeight = 30;
 
 class _Page {
   _Page({ this.label });
@@ -31,61 +32,18 @@ final Map<_Page, List<_CardData>> _allPages = <_Page, List<_CardData>>{
       imageAsset: 'shrine/products/radio.png',
       imageAssetPackage: _kGalleryAssetsPackage,
     ),
-    const _CardData(
-      title: 'Sunglasses',
-      imageAsset: 'shrine/products/sunnies.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
+  ],
+  new _Page(label: 'RIGHT'): <_CardData>[
     const _CardData(
       title: 'Clock',
       imageAsset: 'shrine/products/clock.png',
       imageAssetPackage: _kGalleryAssetsPackage,
     ),
-    const _CardData(
-      title: 'Red popsicle',
-      imageAsset: 'shrine/products/popsicle.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Folding Chair',
-      imageAsset: 'shrine/products/lawn_chair.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Green comfort chair',
-      imageAsset: 'shrine/products/chair.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Old Binoculars',
-      imageAsset: 'shrine/products/binoculars.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Teapot',
-      imageAsset: 'shrine/products/teapot.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Blue suede shoes',
-      imageAsset: 'shrine/products/chucks.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
   ],
-  new _Page(label: 'RIGHT'): <_CardData>[
+  new _Page(label: 'RIGHT2'): <_CardData>[
     const _CardData(
       title: 'Beachball',
       imageAsset: 'shrine/products/beachball.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Dipped Brush',
-      imageAsset: 'shrine/products/brush.png',
-      imageAssetPackage: _kGalleryAssetsPackage,
-    ),
-    const _CardData(
-      title: 'Perfect Goldfish Bowl',
-      imageAsset: 'shrine/products/fish_bowl.png',
       imageAssetPackage: _kGalleryAssetsPackage,
     ),
   ],
@@ -102,7 +60,7 @@ class _CardDataItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Card(
       child: new Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(5.0),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -151,13 +109,14 @@ class TabsDemo extends StatelessWidget {
                 child: new SliverAppBar(
                   title: const Text('Tabs and scrolling'),
                   pinned: true,
-                  expandedHeight: 150.0,
+                  expandedHeight: 2.0,
                   forceElevated: innerBoxIsScrolled,
-                  bottom: new TabBar(
-                    tabs: _allPages.keys.map(
-                      (_Page page) => new Tab(text: page.label),
-                    ).toList(),
-                  ),
+// コメントアウトを外すとタブが出現
+//                  bottom: new TabBar(
+//                    tabs: _allPages.keys.map(
+//                      (_Page page) => new Tab(text: page.label),
+//                    ).toList(),
+//                  ),
                 ),
               ),
             ];
@@ -177,17 +136,17 @@ class TabsDemo extends StatelessWidget {
                         ),
                         new SliverPadding(
                           padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                            horizontal: 16.0,
+//                            vertical: 8.0,
+                            horizontal: 2.0,
                           ),
                           sliver: new SliverFixedExtentList(
-                            itemExtent: _CardDataItem.height,
+                            itemExtent: MediaQuery.of(context).size.height,
                             delegate: new SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 final _CardData data = _allPages[page][index];
                                 return new Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0,
+                                    vertical: 2.0,
                                   ),
                                   child: new _CardDataItem(
                                     page: page,

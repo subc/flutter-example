@@ -51,6 +51,15 @@ List<GalleryItem> _buildGalleryItems() {
   // When editing this list, make sure you keep it in sync with
   // the list in ../../test_driver/transitions_perf_test.dart
   final List<GalleryItem> galleryItems = <GalleryItem>[
+    // for novel
+    new GalleryItem(
+      title: 'Tabs',
+      subtitle: 'Tabs with independently scrollable views',
+      category: '!for novels',
+      routeName: TabsDemo.routeName,
+      buildRoute: (BuildContext context) => new TabsDemo(),
+    ),
+
     // Demos
     new GalleryItem(
       title: 'Shrine',
@@ -255,13 +264,6 @@ List<GalleryItem> _buildGalleryItems() {
       category: 'Material Components',
       routeName: SnackBarDemo.routeName,
       buildRoute: (BuildContext context) => const SnackBarDemo(),
-    ),
-    new GalleryItem(
-      title: 'Tabs',
-      subtitle: 'Tabs with independently scrollable views',
-      category: 'Material Components',
-      routeName: TabsDemo.routeName,
-      buildRoute: (BuildContext context) => new TabsDemo(),
     ),
     new GalleryItem(
       title: 'Text fields',
