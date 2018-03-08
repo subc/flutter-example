@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 // Each TabBarView contains a _Page and for each _Page there is a list
 // of _CardData objects. Each _CardData object is displayed by a _CardItem.
@@ -93,83 +94,112 @@ class _CardDataItem extends StatelessWidget {
   }
 }
 
-class TabsDemo extends StatelessWidget {
+
+
+class TabsDemo extends StatefulWidget {
+  const TabsDemo({ Key key, this.light }) : super(key: key);
+
+  final bool light;
+
+  @override
+  _TabsDemoState createState() => new _TabsDemoState();
+}
+
+class _TabsDemoState extends State<TabsDemo> {
   static const String routeName = '/material/tabs';
+  bool _logoHasName = true;
+  bool _logoHorizontal = true;
 
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController(
       length: _allPages.length,
-      child: new Scaffold(
-        body: new NestedScrollView(
-            // スクロールの初期位置
-            controller: new ScrollController(
-              initialScrollOffset: -50.0,
-            ),
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              new SliverOverlapAbsorber(
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                child: new SliverAppBar(
-                  title: const Text('Tabs and scrolling'),
-                  pinned: false,
-                  primary: true,
-                  snap: false,
-                  expandedHeight: 2.0,
-                  forceElevated: innerBoxIsScrolled,
-// コメントアウトを外すとタブが出現
-//                  bottom: new TabBar(
-//                    tabs: _allPages.keys.map(
-//                      (_Page page) => new Tab(text: page.label),
-//                    ).toList(),
-//                  ),
-                ),
+      child: new GestureDetector(
+        // ボタン長押し
+        onLongPress: () {
+          setState(() {
+            _logoHorizontal = !_logoHorizontal;
+            if (!_logoHasName)
+              _logoHasName = true;
+          });
+        },
+        // タップイベント
+        onTap: () {
+          setState(() {
+            _logoHasName = !_logoHasName;
+          });
+        },
+        child: new Scaffold(
+          body: new NestedScrollView(
+              // スクロールの初期位置
+              controller: new ScrollController(
+                initialScrollOffset: -50.0,
               ),
-            ];
-          },
-          body: new TabBarView(
-            children: _allPages.keys.map((_Page page) {
-              return new SafeArea(
-                top: false,
-                bottom: false,
-                child: new Builder(
-                  builder: (BuildContext context) {
-                    return new CustomScrollView(
-                      key: new PageStorageKey<_Page>(page),
-                      slivers: <Widget>[
-                        new SliverOverlapInjector(
-                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                        ),
-                        new SliverPadding(
-                          padding: const EdgeInsets.symmetric(
-//                            vertical: 8.0,
-                            horizontal: 2.0,
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return <Widget>[
+                new SliverOverlapAbsorber(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  child: new SliverAppBar(
+                    title: const Text('Tabs and scrolling'),
+                    pinned: false,
+                    primary: true,
+                    snap: false,
+                    expandedHeight: 2.0,
+                    forceElevated: innerBoxIsScrolled,
+  // コメントアウトを外すとタブが出現
+  //                  bottom: new TabBar(
+  //                    tabs: _allPages.keys.map(
+  //                      (_Page page) => new Tab(text: page.label),
+  //                    ).toList(),
+  //                  ),
+                  ),
+                ),
+              ];
+            },
+            body: new TabBarView(
+              children: _allPages.keys.map((_Page page) {
+                return new SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: new Builder(
+                    builder: (BuildContext context) {
+                      return new CustomScrollView(
+                        key: new PageStorageKey<_Page>(page),
+                        slivers: <Widget>[
+                          new SliverOverlapInjector(
+                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                           ),
-                          sliver: new SliverFixedExtentList(
-                            itemExtent: MediaQuery.of(context).size.height,
-                            delegate: new SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                final _CardData data = _allPages[page][index];
-                                return new Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 2.0,
-                                  ),
-                                  child: new _CardDataItem(
-                                    page: page,
-                                    data: data,
-                                  ),
-                                );
-                              },
-                              childCount: _allPages[page].length,
+                          new SliverPadding(
+                            padding: const EdgeInsets.symmetric(
+  //                            vertical: 8.0,
+                              horizontal: 2.0,
+                            ),
+                            sliver: new SliverFixedExtentList(
+                              itemExtent: MediaQuery.of(context).size.height,
+                              delegate: new SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  final _CardData data = _allPages[page][index];
+                                  return new Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 2.0,
+                                    ),
+                                    child: new _CardDataItem(
+                                      page: page,
+                                      data: data,
+                                    ),
+                                  );
+                                },
+                                childCount: _allPages[page].length,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              );
-            }).toList(),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),

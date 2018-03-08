@@ -56,7 +56,7 @@ List<GalleryItem> _buildGalleryItems() {
       title: 'Tabs',
       subtitle: 'Tabs with independently scrollable views',
       category: '!for novels',
-      routeName: TabsDemo.routeName,
+      routeName: 'hoge',
       buildRoute: (BuildContext context) => new TabsDemo(),
     ),
 
