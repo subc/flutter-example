@@ -102,13 +102,19 @@ class TabsDemo extends StatelessWidget {
       length: _allPages.length,
       child: new Scaffold(
         body: new NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            // スクロールの初期位置
+            controller: new ScrollController(
+              initialScrollOffset: -50.0,
+            ),
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               new SliverOverlapAbsorber(
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 child: new SliverAppBar(
                   title: const Text('Tabs and scrolling'),
-                  pinned: true,
+                  pinned: false,
+                  primary: true,
+                  snap: false,
                   expandedHeight: 2.0,
                   forceElevated: innerBoxIsScrolled,
 // コメントアウトを外すとタブが出現
