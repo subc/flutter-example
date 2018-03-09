@@ -66,21 +66,18 @@ class _CardDataItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            new Align(
-              alignment: page.id == 'L'
-                ? Alignment.centerLeft
-                : Alignment.centerRight,
-              child: new CircleAvatar(child: new Text('${page.id}')),
-            ),
             new SizedBox(
 //              width: 144.0,
-              height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 9), // ディスプレイの高さ基準で計算 TODO -100を最適化
-              child: _buildDocuments(),
+              height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 18), // ディスプレイの高さ基準で計算
+              child: new Padding(
+                padding: new EdgeInsets.only(top: (MediaQuery.of(context).size.height / 18)), // viewerの上部空白
+                child: _buildDocuments(),
+              ),
             ),
             new Center(
               child: new Text(
-                data.title,
-                style: Theme.of(context).textTheme.title,
+                '- 10 -', // ページ番号
+                style: Theme.of(context).textTheme.caption,
               ),
             ),
           ],
@@ -104,19 +101,35 @@ class _CardDataItem extends StatelessWidget {
             // three line description
             new Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　月額課金",),
+              child: new Text("あいうえお　縦書きできない",),
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　月額課金",),
+              child: new Text("あいうえお　縦書きできない",),
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　月額課金 ¥3000円",),
+              child: new Text("あいうえお　縦書きできない ¥3000＼(^o^)／",),
             ),
             new Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　月額課金 ￥３０００円",),
+              child: new Text("あいうえお　縦書きできない ￥３０００＼(^o^)／",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("かきくけこ　縦書きできない ￥３０００＼(^o^)／",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("さしすせそ　縦書きできない ￥３０００＼(^o^)／",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("読み込み権限　縦書きできない ￥３０００＼(^o^)／",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("DARAGH　縦書きできない ￥３０００＼(^o^)／",),
             ),
           ],
         ),
@@ -197,7 +210,7 @@ class _TabsDemoState extends State<TabsDemo> {
           new SliverOverlapAbsorber(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             child: new SliverAppBar(
-              title: const Text('Tabs and scrolling'),
+              title: const Text('novel viewer'),
               pinned: false,
               primary: true,
               snap: false,
