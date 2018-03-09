@@ -208,15 +208,7 @@ class _TabsDemoState extends State<TabsDemo> {
                       delegate: new SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
                           final _CardData data = _allPages[page][index];
-                          return new Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 2.0,
-                            ),
-                            child: new _CardDataItem(
-                              page: page,
-                              data: data,
-                            ),
-                          );
+                          return _buildViewerContent(page, data);
                         },
                         childCount: _allPages[page].length,
                       ),
@@ -228,6 +220,18 @@ class _TabsDemoState extends State<TabsDemo> {
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildViewerContent(_Page page, _CardData data){
+    return new Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 2.0,
+      ),
+      child: new _CardDataItem(
+        page: page,
+        data: data,
+      ),
     );
   }
 
