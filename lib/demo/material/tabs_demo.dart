@@ -118,6 +118,7 @@ class _TabsDemoState extends State<TabsDemo> {
         // ボタン長押し
         onLongPress: () {
           setState(() {
+            print('onLongPress');
             _logoHorizontal = !_logoHorizontal;
             if (!_logoHasName)
               _logoHasName = true;
@@ -126,6 +127,7 @@ class _TabsDemoState extends State<TabsDemo> {
         // タップイベント
         onTap: () {
           setState(() {
+            print('onTap');
             _logoHasName = !_logoHasName;
           });
         },
@@ -136,6 +138,12 @@ class _TabsDemoState extends State<TabsDemo> {
                 initialScrollOffset: -50.0,
               ),
               headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+
+              // 特定の条件のときウィジェットを生成する
+              print('NestedScrollView body');
+
+
+              // 本来のUI描写
               return <Widget>[
                 new SliverOverlapAbsorber(
                   handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
