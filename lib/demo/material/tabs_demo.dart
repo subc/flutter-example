@@ -74,7 +74,7 @@ class _CardDataItem extends StatelessWidget {
             ),
             new SizedBox(
               width: 144.0,
-              height: 144.0,
+              height: MediaQuery.of(context).size.height - 100, // ディスプレイの高さ基準で計算 TODO -100を最適化
               child: new Image.asset(
                 data.imageAsset,
                 package: data.imageAssetPackage,
@@ -109,6 +109,7 @@ class _TabsDemoState extends State<TabsDemo> {
   static const String routeName = '/material/tabs';
   bool _logoHasName = true;
   bool _logoHorizontal = true;
+  bool _showPageSlideBar = false;
   Slider pageSlider;
   double _progress = 25.0;
 
@@ -121,6 +122,7 @@ class _TabsDemoState extends State<TabsDemo> {
         onLongPress: () {
           setState(() {
             print('onLongPress');
+            _showShoppingCart();
             _logoHorizontal = !_logoHorizontal;
             if (!_logoHasName)
               _logoHasName = true;
@@ -130,8 +132,8 @@ class _TabsDemoState extends State<TabsDemo> {
         onTap: () {
           setState(() {
             print('onTap');
-            _showShoppingCart();
             _logoHasName = !_logoHasName;
+            _showPageSlideBar = !_showPageSlideBar; // ページ選択の出力可否切り替え
           });
         },
         child: new Scaffold(
@@ -224,13 +226,20 @@ class _TabsDemoState extends State<TabsDemo> {
   }
 
   Widget _buildViewerContent(_Page page, _CardData data){
+    var contents;
+    if (_showPageSlideBar){
+      contents = [pageSlider, new _CardDataItem(page: page, data: data,)];
+    }
+    else {
+      contents = [new _CardDataItem(page: page, data: data,)];
+    }
+
     return new Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 2.0,
       ),
-      child: new _CardDataItem(
-        page: page,
-        data: data,
+      child: new Column(
+          children: contents
       ),
     );
   }
