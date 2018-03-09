@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:flutter/cupertino.dart';
 
 // Each TabBarView contains a _Page and for each _Page there is a list
 // of _CardData objects. Each _CardData object is displayed by a _CardItem.
@@ -75,17 +75,48 @@ class _CardDataItem extends StatelessWidget {
             new SizedBox(
 //              width: 144.0,
               height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 9), // ディスプレイの高さ基準で計算 TODO -100を最適化
-              child: new Image.asset(
-                data.imageAsset,
-                package: data.imageAssetPackage,
-                fit: BoxFit.contain,
-              ),
+              child: _buildDocuments(),
             ),
             new Center(
               child: new Text(
                 data.title,
                 style: Theme.of(context).textTheme.title,
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDocuments(){
+    return new DefaultTextStyle(
+      style: const TextStyle(
+        letterSpacing: -0.24,
+        fontSize: 17.0,
+        color: CupertinoColors.black,
+      ),
+      child: new RotatedBox(
+        quarterTurns: 1,
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // three line description
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("あいうえお　月額課金",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("あいうえお　月額課金",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("あいうえお　月額課金 ¥3000円",),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: new Text("あいうえお　月額課金 ￥３０００円",),
             ),
           ],
         ),
