@@ -61,7 +61,7 @@ class _CardDataItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Card(
       child: new Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(2.0),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -73,8 +73,8 @@ class _CardDataItem extends StatelessWidget {
               child: new CircleAvatar(child: new Text('${page.id}')),
             ),
             new SizedBox(
-              width: 144.0,
-              height: MediaQuery.of(context).size.height - 100, // ディスプレイの高さ基準で計算 TODO -100を最適化
+//              width: 144.0,
+              height: MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height / 9), // ディスプレイの高さ基準で計算 TODO -100を最適化
               child: new Image.asset(
                 data.imageAsset,
                 package: data.imageAssetPackage,
@@ -258,15 +258,42 @@ class _TabsDemoState extends State<TabsDemo> {
   }
 
   void _showShoppingCart() {
+    final ThemeData theme = Theme.of(context);
     showModalBottomSheet<Null>(context: context, builder: (BuildContext context) {
-      return new Padding(
-        padding: const EdgeInsets.all(0.2),
-        child: new Column(
-          children: <Widget>[
-            pageSlider,
-          ]
-        ),
-      );
-    });
+      return new Container(
+        padding: const EdgeInsets.all(0.0),
+        height: MediaQuery.of(context).size.height / 9, // 高さは画面全体の1/n割
+        child: new AppBar(
+          iconTheme: theme.iconTheme,
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          title: new Text('page', style: theme.textTheme.title.copyWith(color: Colors.black54)),
+          centerTitle: true,
+          actions: <Widget>[
+            // 前ページ
+            new IconButton(
+                icon: const Icon(Icons.skip_previous),
+                tooltip: 'previous page',
+                onPressed: _showPrevPage
+            ),
+            // 次ページ
+            new IconButton(
+                icon: const Icon(Icons.skip_next),
+                tooltip: 'next page',
+                onPressed: _showNextPage
+            ),
+          ],
+          ),
+        );
+      }
+    );
+  }
+
+  void _showPrevPage(){
+    print('show Prev Page');
+  }
+
+  void _showNextPage(){
+    print('show Next Page');
   }
 }
