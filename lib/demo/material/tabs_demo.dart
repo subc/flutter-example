@@ -109,6 +109,8 @@ class _TabsDemoState extends State<TabsDemo> {
   static const String routeName = '/material/tabs';
   bool _logoHasName = true;
   bool _logoHorizontal = true;
+  Slider pageSlider;
+  double _progress = 25.0;
 
   @override
   Widget build(BuildContext context) {
@@ -128,89 +130,130 @@ class _TabsDemoState extends State<TabsDemo> {
         onTap: () {
           setState(() {
             print('onTap');
+            _showShoppingCart();
             _logoHasName = !_logoHasName;
           });
         },
         child: new Scaffold(
-          body: new NestedScrollView(
-              // スクロールの初期位置
-              controller: new ScrollController(
-                initialScrollOffset: -50.0,
-              ),
-              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-
-              // 特定の条件のときウィジェットを生成する
-              print('NestedScrollView body');
-
-
-              // 本来のUI描写
-              return <Widget>[
-                new SliverOverlapAbsorber(
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  child: new SliverAppBar(
-                    title: const Text('Tabs and scrolling'),
-                    pinned: false,
-                    primary: true,
-                    snap: false,
-                    expandedHeight: 2.0,
-                    forceElevated: innerBoxIsScrolled,
-  // コメントアウトを外すとタブが出現
-  //                  bottom: new TabBar(
-  //                    tabs: _allPages.keys.map(
-  //                      (_Page page) => new Tab(text: page.label),
-  //                    ).toList(),
-  //                  ),
-                  ),
-                ),
-              ];
-            },
-            body: new TabBarView(
-              children: _allPages.keys.map((_Page page) {
-                return new SafeArea(
-                  top: false,
-                  bottom: false,
-                  child: new Builder(
-                    builder: (BuildContext context) {
-                      return new CustomScrollView(
-                        key: new PageStorageKey<_Page>(page),
-                        slivers: <Widget>[
-                          new SliverOverlapInjector(
-                            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                          ),
-                          new SliverPadding(
-                            padding: const EdgeInsets.symmetric(
-  //                            vertical: 8.0,
-                              horizontal: 2.0,
-                            ),
-                            sliver: new SliverFixedExtentList(
-                              itemExtent: MediaQuery.of(context).size.height,
-                              delegate: new SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                  final _CardData data = _allPages[page][index];
-                                  return new Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2.0,
-                                    ),
-                                    child: new _CardDataItem(
-                                      page: page,
-                                      data: data,
-                                    ),
-                                  );
-                                },
-                                childCount: _allPages[page].length,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
+          body: _buildCenter()
         ),
       ),
     );
+  }
+
+  Center _buildCenter(){
+    return new Center(
+      child: _buildNestedScrollView()
+    );
+  }
+
+  NestedScrollView _buildNestedScrollView(){
+    return new NestedScrollView(
+      // スクロールの初期位置
+      controller: new ScrollController(
+        initialScrollOffset: -50.0,
+      ),
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+
+        // 特定の条件のときウィジェットを生成する
+        print('NestedScrollView body');
+        pageSlider = _buildSlider();
+
+        // 本来のUI描写
+        return <Widget>[
+          new SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            child: new SliverAppBar(
+              title: const Text('Tabs and scrolling'),
+              pinned: false,
+              primary: true,
+              snap: false,
+              expandedHeight: 2.0,
+              forceElevated: innerBoxIsScrolled,
+              // コメントアウトを外すとタブが出現
+              //                  bottom: new TabBar(
+              //                    tabs: _allPages.keys.map(
+              //                      (_Page page) => new Tab(text: page.label),
+              //                    ).toList(),
+              //                  ),
+            ),
+          ),
+        ];
+      },
+      body: _buildTabBarView()
+    );
+  }
+
+  TabBarView _buildTabBarView() {
+    return new TabBarView(
+      children: _allPages.keys.map((_Page page) {
+        return new SafeArea(
+          top: false,
+          bottom: false,
+          child: new Builder(
+            builder: (BuildContext context) {
+              return new CustomScrollView(
+                key: new PageStorageKey<_Page>(page),
+                slivers: <Widget>[
+                  new SliverOverlapInjector(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                  ),
+                  new SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      //                            vertical: 8.0,
+                      horizontal: 2.0,
+                    ),
+                    sliver: new SliverFixedExtentList(
+                      itemExtent: MediaQuery.of(context).size.height,
+                      delegate: new SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                          final _CardData data = _allPages[page][index];
+                          return new Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 2.0,
+                            ),
+                            child: new _CardDataItem(
+                              page: page,
+                              data: data,
+                            ),
+                          );
+                        },
+                        childCount: _allPages[page].length,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Slider _buildSlider() {
+    return new Slider(
+      value: _progress,
+      min: 0.0,
+      max: 100.0,
+      onChanged: (double value) {
+        setState(() {
+          _progress = value;
+        });
+      }
+    );
+  }
+
+  void _showShoppingCart() {
+    showModalBottomSheet<Null>(context: context, builder: (BuildContext context) {
+      return new Padding(
+        padding: const EdgeInsets.all(0.2),
+        child: new Column(
+          children: <Widget>[
+            pageSlider,
+          ]
+        ),
+      );
+    });
   }
 }
