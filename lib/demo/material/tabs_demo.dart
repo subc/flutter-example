@@ -87,49 +87,144 @@ class _CardDataItem extends StatelessWidget {
   }
 
   Widget _buildDocuments(){
+    double table_row_height = 20.0;
+    String s = "　吾輩は人間と同居して彼等を観察すればするほど";
+    String s2 = "彼等は我儘わがままなものだと断言せざるを得ないようになった。";
+    String s3 = "ことに吾輩が時々同衾どうきんする小供のごときに至っては言語同断ごんごどうだんである";
     return new DefaultTextStyle(
+//      maxLines: 1, // 最大行数
+      overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-        letterSpacing: -0.24,
-        fontSize: 17.0,
+        fontFamily: 'NasuM',
+        textBaseline: TextBaseline.ideographic,
+        letterSpacing: 1.24, // 水平方向の文字の詰め方
+        wordSpacing: -5.24,
+        fontSize: 20.0,
         color: CupertinoColors.black,
+        decorationStyle: TextDecorationStyle.wavy,
       ),
-      child: new RotatedBox(
-        quarterTurns: 1,
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // three line description
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　縦書きできない",),
+      child: new Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+        child: new Table(
+          defaultColumnWidth: const FixedColumnWidth(24.0),
+//          columnWidths: const <int, TableColumnWidth>{
+//            0: const FixedColumnWidth(24.0),
+//            1: const FixedColumnWidth(24.0),
+//            2: const FixedColumnWidth(24.0),
+//            3: const FixedColumnWidth(24.0),
+//            4: const FixedColumnWidth(24.0),
+//            5: const FixedColumnWidth(24.0),
+//            6: const FixedColumnWidth(24.0),
+//            7: const FixedColumnWidth(24.0),
+//            8: const FixedColumnWidth(24.0),
+//          },
+          children: <TableRow>[
+            new TableRow(
+                children: <Widget>[
+                  new SizedBox(
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    child: new Text("あ",),
+                  ),
+//                  new TableCell(
+//                      verticalAlignment: TableCellVerticalAlignment.middle,
+//                      child: new Text("い",),
+//                  ),
+//                  new TableCell(
+//                      verticalAlignment: TableCellVerticalAlignment.middle,
+//                      child: new Text("u",),
+//                  ),
+//                  new TableCell(
+//                      verticalAlignment: TableCellVerticalAlignment.middle,
+//                      child: new Text("え",),
+//                  ),
+//                  new TableCell(
+//                      verticalAlignment: TableCellVerticalAlignment.middle,
+//                      child: new Text("o",),
+//                  ),
+                ]
             ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　縦書きできない",),
+            new TableRow(
+                children: <Widget>[
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("i",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                ]
             ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　縦書きできない ¥3000＼(^o^)／",),
+            new TableRow(
+                children: <Widget>[
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("i",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                ]
             ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("あいうえお　縦書きできない ￥３０００＼(^o^)／",),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("かきくけこ　縦書きできない ￥３０００＼(^o^)／",),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("さしすせそ　縦書きできない ￥３０００＼(^o^)／",),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("読み込み権限　縦書きできない ￥３０００＼(^o^)／",),
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: new Text("DARAGH　縦書きできない ￥３０００＼(^o^)／",),
+            new TableRow(
+                children: <Widget>[
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("i",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                  new SizedBox(
+                    height: table_row_height,
+                    child: new Text("あ",),
+                  ),
+                ]
             ),
           ],
         ),
